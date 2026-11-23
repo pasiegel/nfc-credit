@@ -285,14 +285,28 @@ class PN532:
     def __init__(self, port, baud=115200):
         self.ser = serial.Serial(port, baud, timeout=0.5)
         try:
-            self.ser.write(b"\x55\x55" + b"\x00" * 14)   # wake from low-power
-            time.sleep(0.05)
-            self.ser.reset_input_buffer()
-            self.command(0x14, b"\x01\x14\x01")          # SAMConfiguration
+            self._wake()
             self.command(0x32, b"\x05\xff\x01\x02")      # quick-fail polling
         except Exception:
             self.close()
             raise
+
+    def _wake(self, attempts=3):
+        """Wake the PN532 from power-on/low-power state. The wake preamble must be
+        followed immediately by the first command (no pause), or a freshly powered
+        board goes back to sleep and ignores it."""
+        sam = self._frame(0x14, b"\x01\x14\x01")         # SAMConfiguration
+        for i in range(attempts):
+            self.ser.reset_input_buffer()
+            self.ser.write(b"\x55\x55" + b"\x00" * 14 + sam)
+            try:
+                self._finish(0x14)
+                return
+            except (TimeoutError, IOError):
+                if i == attempts - 1:
+                    raise
+                self.ser.write(b"\x00\x00\xff\x00\xff\x00")  # ACK = abort anything pending
+                time.sleep(0.1)
 
     def close(self):
         try:
@@ -336,6 +350,10 @@ class PN532:
 
     def command(self, cmd, data=b""):
         self.ser.write(self._frame(cmd, data))
+        return self._finish(cmd)
+
+    def _finish(self, cmd):
+        """Read the ACK and response for a command already sent."""
         if self._read_frame() is not None:
             raise IOError("PN532 expected ACK")
         body = self._read_frame()
