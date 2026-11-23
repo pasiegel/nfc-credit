@@ -1,10 +1,10 @@
 # NFC Credit
 
+> **About this project:** NFC Credit is a small personal project, built to make a home MAME cabinet feel a bit more like the real arcade. It's meant to be simple: tap a card to add credits, launch programs on the cab, or log in to games that use a card or key sequence. It isn't a commercial product and there's no support, but feel free to use it if it fits your setup.
+
 Tap an NFC card on a USB reader and your arcade cabinet gets a credit.
 
 NFC Credit sits in the Windows system tray and watches a PN532 NFC reader. When a card is tapped it presses a key (default **5**, the MAME coin key), clicks the mouse, or launches a program. Every card can have its own action.
-
-> **About this project:** NFC Credit is a small personal project, built to make a home MAME cabinet feel a bit more like the real arcade. It's meant to be simple: tap a card to add credits, launch programs on the cab, or log in to games that use a card or key sequence. It isn't a commercial product and there's no support, but feel free to use it if it fits your setup.
 
 ![Settings window](docs/settings.png)
 
