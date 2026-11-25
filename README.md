@@ -121,9 +121,13 @@ On the **Options** tab:
 - **Sound on tap**: leave blank for no sound (the default), choose `coin` for a built-in arcade coin sound, or pick your own `.wav`. Each card can override it with its own **Sound** (`none` silences that card).
 - **Pop-ups**: show a notification when the reader connects or disconnects. It appears once per change, not on every retry.
 
+![Reader pop-up](docs/popup.png)
+
 ### Reader settings
 
 On the **Reader** tab:
+
+![Reader settings](docs/reader.png)
 
 | Setting | Meaning |
 |---|---|
@@ -220,3 +224,19 @@ build.bat
 The exe is written to `dist\NFC-Credit.exe`. You can also run it directly with `python nfc_credit.py`.
 
 Pushing a tag like `v1.0.0` builds the exe on GitHub Actions and publishes it as a release.
+
+## Changelog
+
+**v1.1.0**
+- Program profiles: cards can act differently while a given program is in front
+- New actions: **Type text** and **Write card ID to file** (game logins)
+- Optional sound on tap: built-in coin or your own `.wav`, with per-card override
+- Pop-up when the reader connects or disconnects
+- Settings reorganised into Cards / Reader / Options / Activity tabs
+- Default behaviour unchanged: any card still presses **5**
+
+**v1.0.1**
+- Fixed the reader not responding right after being plugged in (it previously needed NFC Tools to wake it)
+
+**v1.0.0**
+- First release: tray app, per-card keys / mouse clicks / run program, card types, auto-detected COM port, Start with Windows
